@@ -1,10 +1,10 @@
 package simple.com.thum.labthread;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         thread.start();*/
 
         // Thread Method 2: Thread with Handler
-        handler = new Handler(Looper.getMainLooper()) {
+        /*handler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
@@ -74,12 +74,25 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        thread.start();
+        thread.start();*/
+
+        // Thread Method 3: Handler Only is doing in MainThread on Create any Thread.
+        handler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                counter++;
+                tvCounter.setText(counter + "");
+                if (counter < 100)
+                    sendEmptyMessageDelayed(0, 1000);
+            }
+        };
+        handler.sendEmptyMessageDelayed(0, 1000);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        thread.interrupt();
+        //thread.interrupt();
     }
 }
